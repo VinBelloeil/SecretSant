@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="name">
+    <h1>Draw History</h1>
+
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% for draw in draws %}
+    <div><strong>Draw id {{ draw.id }}, created on {{ draw.created.strftime('%d/%m/%Y %H:%M:%S') }}</strong></div>
+    <ul>
+        {% for assign in draw.assignments %}
+        <li>{{ assign.giver.name }} gives to {{ assign.receiver.name }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    
+</div>
+<form action="/tirage" method="GET">
+    <input type="submit" value="Draw once again">
+</form>
+{% endblock %}
