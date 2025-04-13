@@ -30,7 +30,7 @@ def draw(participants):
         if valid:
             return assignEveryGift(givers, receivers)
     
-    raise ValueError(f"Impossible de générer un tirage valide après {max_attempt} tentatives.")
+    raise ValueError(f"No valid draw after {max_attempt} attempts.")
 
 
 def assignEveryGift(givers, receivers):
