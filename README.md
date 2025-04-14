@@ -71,3 +71,25 @@ Once the app is running:
 3. Launch the Secret Santa draw
 4. View the result (who gives a gift to whom)
 
+## 🔧 Possible Improvements
+
+While the current version of the Secret Santa app is functional, here are some ideas to enhance it further:
+
+- 🎨 **Improve the UI**  
+  Add a more responsive front-end design for a better user experience.
+
+- 🧠 **Optimize the Draw Algorithm**  
+  Replace the current brute-force shuffle with a recursive algorithm.
+
+- 🔀 **Better Route Separation**  
+  Organize participant-related routes into their own Blueprint.
+
+- ⚙️ **Shared Test Configuration**  
+  Introduce a common configuration file or fixture setup for all tests.
+
+- 📄 **Better Commit Split**  
+  Structure commits to reflect precise changes.
+
+- 🚫 **Restrict Invalid Operations**  
+  Add checks to prevent scenarios like having two participants with the same name.
+
