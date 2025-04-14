@@ -93,3 +93,8 @@ While the current version of the Secret Santa app is functional, here are some i
 - 🚫 **Restrict Invalid Operations**  
   Add checks to prevent scenarios like having two participants with the same name.
 
+## 🗂️ Database Model
+
+Voici le modèle de base de données utilisé dans l’application :
+
+![Database Model](docs/DbModel.svg)
