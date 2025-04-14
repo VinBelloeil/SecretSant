@@ -82,6 +82,7 @@ class TestServices(unittest.TestCase):
             db.session.add(alice_exclusion_1)
             db.session.add(alice_exclusion_2)
             db.session.commit()
+            
             with self.assertRaises(ValueError) as context:
                 draw([alice, bob, charlie])
 

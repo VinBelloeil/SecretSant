@@ -21,49 +21,65 @@ class TestServices(unittest.TestCase):
     def test_add_participant(self):
         with app.app_context():
             self.assertEqual(Participant.query.count(), 0)  # 0 participant
-            add_participant('Alice')  
+
+            add_participant('Alice') 
+
             self.assertEqual(Participant.query.count(), 1)  # 1 participant 
             participant = Participant.query.first()
             self.assertEqual(participant.name, 'Alice')
 
     def test_delete_participant(self):
         with app.app_context():
-            add_participant('Bob')
-            participant = Participant.query.first()
-            add_participant('Charlie')  # add 2 participants
+            bob = Participant(name='Bob')
+            charlie = Participant(name='Charlie')
+            db.session.add(bob)
+            db.session.add(charlie)
+            db.session.commit() # add 2 participants
             self.assertEqual(Participant.query.count(), 2)
-            delete_participant(participant.id)
+
+            delete_participant(bob.id)
+
             self.assertEqual(Participant.query.count(), 1)  # 1 remaining participant
             self.assertEqual(Participant.query.first().name, 'Charlie')
 
     def test_update_participant(self):
         with app.app_context():
-            add_participant('Alice')
-            participant = Participant.query.first()
-            self.assertEqual(participant.name, 'Alice')  # Initial name
-            update_participant(participant.id, 'Alicia')
+            alice = Participant(name='Alice')
+            db.session.add(alice)
+            db.session.commit()
+            self.assertEqual(alice.name, 'Alice')  # Initial name
+
+            update_participant(alice.id, 'Alicia')
+
             participant = Participant.query.first()
             self.assertEqual(participant.name, 'Alicia')
 
     def test_clear_exclusions(self):
         with app.app_context():
-            add_participant('Alice')
-            add_participant('Bob')
-            alice = Participant.query.filter_by(name='Alice').first()
-            bob = Participant.query.filter_by(name='Bob').first()
-            exclude_participant(alice.id, bob.id)
-            self.assertEqual(Exclusion.query.count(), 1)
+            alice = Participant(name='Alice')
+            bob = Participant(name='Bob')
+            db.session.add(alice)
+            db.session.add(bob)
+            db.session.commit()
+            exclusion = Exclusion(participant_id=alice.id, excluded_id=bob.id)
+            db.session.add(exclusion)
+            db.session.commit()
+
             clear_exclusions(alice.id)
+
             self.assertEqual(Exclusion.query.count(), 0)  # 0 exclusion after cleaning
 
     def test_exclude_participant(self):
         with app.app_context():
-            add_participant('Alice')
-            add_participant('Bob')
-            alice = Participant.query.filter_by(name='Alice').first()
-            bob = Participant.query.filter_by(name='Bob').first()
+            alice = Participant(name='Alice')
+            bob = Participant(name='Bob')
+            db.session.add(alice)
+            db.session.add(bob)
+            db.session.commit()
             self.assertEqual(Exclusion.query.count(), 0)
+
             exclude_participant(alice.id, bob.id)
+
             exclusion = Exclusion.query.first()
             self.assertEqual(exclusion.participant_id, alice.id)
             self.assertEqual(exclusion.excluded_id, bob.id)
@@ -71,13 +87,18 @@ class TestServices(unittest.TestCase):
 
     def test_include_participant(self):
         with app.app_context():
-            add_participant('Alice')
-            add_participant('Bob')
-            alice = Participant.query.filter_by(name='Alice').first()
-            bob = Participant.query.filter_by(name='Bob').first()
-            exclude_participant(alice.id, bob.id)
+            alice = Participant(name='Alice')
+            bob = Participant(name='Bob')
+            db.session.add(alice)
+            db.session.add(bob)
+            db.session.commit()
+            exclusion = Exclusion(participant_id=alice.id, excluded_id=bob.id)
+            db.session.add(exclusion)
+            db.session.commit()
             self.assertEqual(Exclusion.query.count(), 1)  # 1 Exclusion before
+
             include_participant(alice.id, bob.id)
+
             self.assertEqual(Exclusion.query.count(), 0) # 0 Exclusion after
 
 if __name__ == '__main__':

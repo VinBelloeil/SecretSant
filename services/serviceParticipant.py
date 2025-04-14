@@ -6,12 +6,12 @@ def add_participant(name):
     db.session.commit()
 
 def delete_participant(id):
-    participant_delete = Participant.query.get(id)
+    participant_delete = Participant.query.get_or_404(id)
     db.session.delete(participant_delete)
     db.session.commit()
 
 def update_participant(id, new_name):
-    participant_update = Participant.query.get(id)
+    participant_update = Participant.query.get_or_404(id)
     participant_update.name = new_name
     db.session.commit()
 
