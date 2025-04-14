@@ -38,6 +38,11 @@ To run the app locally, follow these steps:
    source venv/bin/activate       # On Windows: venv\Scripts\activate
    ```
 
+3. **Install requirements**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 3. **Launch DB**:
    Before running the app, initialize the database:
 
