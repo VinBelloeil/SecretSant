@@ -86,7 +86,7 @@ class TestServices(unittest.TestCase):
             with self.assertRaises(ValueError) as context:
                 draw([alice, bob, charlie])
 
-            self.assertTrue("No valid draw after 100 attempts." in str(context.exception))
+            self.assertTrue("No valid draw found." in str(context.exception))
 
 if __name__ == '__main__':
     unittest.main()
