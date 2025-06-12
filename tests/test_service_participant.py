@@ -28,6 +28,22 @@ class TestServices(unittest.TestCase):
             participant = Participant.query.first()
             self.assertEqual(participant.name, 'Alice')
 
+    def test_add_blank_name(self):
+        with self.assertRaises(ValueError) as context:
+            add_participant("   ")
+            assert "cannot be empty" in str(context.value).lower()
+
+    def test_add_duplicate_name(self):
+        with app.app_context():
+            bob = Participant(name='Bob')
+            db.session.add(bob)
+            db.session.commit()
+    
+            with self.assertRaises(ValueError) as context:
+                add_participant("bob")  # insensible à la casse
+
+            self.assertIn("already exists", str(context.exception).lower())
+
     def test_delete_participant(self):
         with app.app_context():
             bob = Participant(name='Bob')
@@ -53,6 +69,19 @@ class TestServices(unittest.TestCase):
 
             participant = Participant.query.first()
             self.assertEqual(participant.name, 'Alicia')
+
+    def test_update_with_existing_name(self):
+        with app.app_context():
+            alice = Participant(name='Alice')
+            bob = Participant(name='Bob')
+            db.session.add(alice)
+            db.session.add(bob)
+            db.session.commit()
+
+            with self.assertRaises(ValueError) as context:
+                update_participant(bob.id,"alice")  # insensible à la casse
+
+            self.assertIn("already exists", str(context.exception).lower())
 
     def test_clear_exclusions(self):
         with app.app_context():
