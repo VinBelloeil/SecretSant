@@ -9,6 +9,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///secretSanta.db'
 db.init_app(app)
 
+app.secret_key = 'une_clé_secrète_très_sécurisée'
+
 app.register_blueprint(participant_bp)
 app.register_blueprint(draw_bp)
 app.register_blueprint(exclusion_bp)

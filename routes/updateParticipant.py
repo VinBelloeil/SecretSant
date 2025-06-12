@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, flash
 from services.serviceParticipant import clear_exclusions, update_participant
 from database import db, Participant 
 
@@ -7,7 +7,10 @@ updateParticipant_bp = Blueprint('update', __name__)
 @updateParticipant_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     if request.method == 'POST':
-        update_participant(id, request.form['name'])
+        try:
+            update_participant(id, request.form['name'])
+        except ValueError as e:
+            flash(str(e), "danger")
         return redirect('/participant')
     else:
         participant_update = Participant.query.get(id)
