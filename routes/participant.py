@@ -9,8 +9,9 @@ participant_bp = Blueprint('participant', __name__)
 def participant():
     if request.method == 'POST':
         name_new_participant = request.form['name']
+        email_new_participant = request.form['email']
         try:
-            add_participant(name_new_participant)
+            add_participant(name_new_participant, email_new_participant)
             flash("Participant added successfully!", "success")
         except ValueError as e:
             flash(str(e), "danger")

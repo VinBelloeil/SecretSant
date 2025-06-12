@@ -8,6 +8,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
+                <th>Email</th>
                 <th>Creation Date</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
             <tr>
                 <td>{{ participant.id }}</td>
                 <td>{{ participant.name }}</td>
+                <td>{{ participant.email }}</td>
                 <td>{{ participant.created.strftime('%d/%m/%Y %H:%M:%S') }}</td>
                 <td>
                     <a href="/delete/{{participant.id}}">Delete</a>
@@ -27,7 +29,8 @@
         </tbody>
     </table>
     <form action="/participant" method="POST">
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" required placeholder="Enter name">
+        <input type="email" name="email" id="email" required placeholder="Enter email">
         <input type="submit" value="Add participant">
     </form>
     <form action="/tirage" method="GET">
