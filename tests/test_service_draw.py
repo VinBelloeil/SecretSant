@@ -21,7 +21,7 @@ class TestServices(unittest.TestCase):
     def test_draw_with_less_than_two_participants(self):
         with app.app_context():
             # add only 1 participant
-            participant = Participant(name='Alice')
+            participant = Participant(name='Alice',email = "alice@alice.com")
             db.session.add(participant)
             db.session.commit()
 
@@ -32,8 +32,8 @@ class TestServices(unittest.TestCase):
 
     def test_draw_without_exclusions(self):
         with app.app_context():
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.commit()
@@ -47,9 +47,9 @@ class TestServices(unittest.TestCase):
     def test_draw_with_exclusions(self):
         with app.app_context():
             # Add 3 participants
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
-            charlie = Participant(name='Charlie')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
+            charlie = Participant(name='Charlie',email = "charlie@charlie.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.add(charlie)
@@ -68,9 +68,9 @@ class TestServices(unittest.TestCase):
     def test_draw_fail_after_max_attempts(self):
         with app.app_context():
             # Add 3 participants
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
-            charlie = Participant(name='Charlie')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
+            charlie = Participant(name='Charlie',email = "charlie@charlie.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.add(charlie)

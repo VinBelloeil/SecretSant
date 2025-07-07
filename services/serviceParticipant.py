@@ -1,15 +1,20 @@
 from database import db, Participant, Exclusion
 
-def add_participant(name):
+def add_participant(name,email):
     clean_name = validate_participant_name(name)
-    new_participant = Participant(name=clean_name)
+    new_participant = Participant(name=clean_name,email=email)
     db.session.add(new_participant)
     db.session.commit()
 
-def update_participant(id, new_name):
+def update_participant(id, new_name, new_email=None):
     participant_update = Participant.query.get_or_404(id)
+    
     clean_name = validate_participant_name(new_name, exclude_id=id)
     participant_update.name = clean_name
+
+    if new_email is not None:
+        participant_update.email = new_email
+    
     db.session.commit()
 
 def validate_participant_name(name, exclude_id=None):

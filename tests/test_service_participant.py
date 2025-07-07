@@ -22,7 +22,7 @@ class TestServices(unittest.TestCase):
         with app.app_context():
             self.assertEqual(Participant.query.count(), 0)  # 0 participant
 
-            add_participant('Alice') 
+            add_participant('Alice','alice@alice.com') 
 
             self.assertEqual(Participant.query.count(), 1)  # 1 participant 
             participant = Participant.query.first()
@@ -30,24 +30,24 @@ class TestServices(unittest.TestCase):
 
     def test_add_blank_name(self):
         with self.assertRaises(ValueError) as context:
-            add_participant("   ")
+            add_participant("   ","")
             assert "cannot be empty" in str(context.value).lower()
 
     def test_add_duplicate_name(self):
         with app.app_context():
-            bob = Participant(name='Bob')
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(bob)
             db.session.commit()
     
             with self.assertRaises(ValueError) as context:
-                add_participant("bob")  # insensible à la casse
+                add_participant("bob","bob@bob.com")  # insensible à la casse
 
             self.assertIn("already exists", str(context.exception).lower())
 
     def test_delete_participant(self):
         with app.app_context():
-            bob = Participant(name='Bob')
-            charlie = Participant(name='Charlie')
+            bob = Participant(name='Bob',email = "bob@bob.com")
+            charlie = Participant(name='Charlie',email= "charlie@charlie.com")
             db.session.add(bob)
             db.session.add(charlie)
             db.session.commit() # add 2 participants
@@ -60,7 +60,7 @@ class TestServices(unittest.TestCase):
 
     def test_update_participant(self):
         with app.app_context():
-            alice = Participant(name='Alice')
+            alice = Participant(name='Alice',email = "alice@alice.com")
             db.session.add(alice)
             db.session.commit()
             self.assertEqual(alice.name, 'Alice')  # Initial name
@@ -72,8 +72,8 @@ class TestServices(unittest.TestCase):
 
     def test_update_with_existing_name(self):
         with app.app_context():
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.commit()
@@ -85,8 +85,8 @@ class TestServices(unittest.TestCase):
 
     def test_clear_exclusions(self):
         with app.app_context():
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.commit()
@@ -100,8 +100,8 @@ class TestServices(unittest.TestCase):
 
     def test_exclude_participant(self):
         with app.app_context():
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.commit()
@@ -116,8 +116,8 @@ class TestServices(unittest.TestCase):
 
     def test_include_participant(self):
         with app.app_context():
-            alice = Participant(name='Alice')
-            bob = Participant(name='Bob')
+            alice = Participant(name='Alice',email = "alice@alice.com")
+            bob = Participant(name='Bob',email = "bob@bob.com")
             db.session.add(alice)
             db.session.add(bob)
             db.session.commit()

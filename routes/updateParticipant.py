@@ -8,7 +8,7 @@ updateParticipant_bp = Blueprint('update', __name__)
 def update(id):
     if request.method == 'POST':
         try:
-            update_participant(id, request.form['name'])
+            update_participant(id, request.form['name'], request.form['email'])
         except ValueError as e:
             flash(str(e), "danger")
         return redirect('/participant')
