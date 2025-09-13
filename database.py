@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 db = SQLAlchemy()
 
@@ -8,6 +10,7 @@ class Participant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable = False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     created = db.Column(db.DateTime, default = datetime.now)
 
     exclusions = db.relationship(
@@ -21,7 +24,12 @@ class Participant(db.Model):
         foreign_keys='Assignment.giver_id',
         back_populates='giver',
         cascade='all, delete-orphan')
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
 
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 class Exclusion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
