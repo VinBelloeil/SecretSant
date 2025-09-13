@@ -7,6 +7,15 @@
       </form>
   </div>
 
+  <div>
+      {% if session['user'] %}
+          <span>Welcome, {{ session['user'] }}</span>
+          <a href="{{ url_for('login.logout') }}">Logout</a>
+      {% else %}
+          <a href="{{ url_for('login.login') }}">Login</a>
+      {% endif %}
+  </div>
+
   <main>
         {% block content %}
         {% endblock %}
